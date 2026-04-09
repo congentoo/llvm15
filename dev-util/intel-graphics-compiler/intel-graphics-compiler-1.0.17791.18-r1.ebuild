@@ -7,7 +7,7 @@ CMAKE_BUILD_TYPE="Release"
 LLVM_COMPAT=( 15 )
 MY_PN="igc"
 MY_P="${MY_PN}-${PV}"
-PYTHON_COMPAT=( python3_{10..13} )
+PYTHON_COMPAT=( python3_{10..14} )
 
 inherit cmake flag-o-matic llvm-r1 python-any-r1
 

@@ -1,0 +1,55 @@
+name: manifest
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    container:
+      image: gentoo/stage3:latest
+      options: --user root
+    steps:
+      - name: Install pkgdev
+        run: |
+          emerge-webrsync --quiet
+          emerge --getbinpkg --usepkg --quiet-build dev-util/pkgdev
+
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Configure repo
+        run: |
+          mkdir -p /etc/portage/repos.conf
+          cat > /etc/portage/repos.conf/ci.conf <<EOF
+          [ci]
+          location = ${GITHUB_WORKSPACE}
+          masters = gentoo
+          auto-sync = no
+          EOF
+
+      - name: Verify manifests up-to-date
+        working-directory: ${{ github.workspace }}
+        run: |
+          # Copy to tmp, regenerate manifests, diff
+          tmp=$(mktemp -d)
+          cp -a . "$tmp/repo"
+          pkgdev manifest -r "$tmp/repo"
+          if ! diff -rq \
+              --exclude=.git --exclude=.github --exclude=.pre-commit-config.yaml \
+              . "$tmp/repo"; then
+            echo "::error::Manifest files are out of date."
+            echo "Run 'pkgdev manifest -r .' locally and commit the changes."
+            exit 1
+          fi
+          echo "✓ All manifests are up to date"

@@ -1,0 +1,31 @@
+name: pkgcheck
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  schedule:
+    # Daily at 06:00 UTC to catch regressions from Gentoo tree updates
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pkgcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Run pkgcheck
+        uses: pkgcore/pkgcheck-action@2ec2e26b1e5d4f9c3c8cf1ae88d7a1fc9e0ce8ed  # v1.2
+        with:
+          # --net enables network-requiring checks (HomepageUnreachable, etc.)
+          # Filter out redundant warnings that don't apply to a small overlay
+          args: --net --keywords=-RedundantVersion

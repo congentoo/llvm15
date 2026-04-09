@@ -1,0 +1,61 @@
+# Pre-commit hooks for Gentoo ebuild repository
+# Install pre-commit: emerge dev-vcs/pre-commit
+# Install hooks: pre-commit install
+
+repos:
+  # Basic text hygiene
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: '\.patch$'
+      - id: end-of-file-fixer
+        exclude: '\.patch$|^.*/Manifest$'
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ['--maxkb=1024']
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+
+  # Shell script linting for ebuilds (they're bash)
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+        files: '\.(ebuild|eclass|sh|bashrc)$'
+        args:
+          - '--shell=bash'
+          - '--severity=warning'
+          - '--exclude=SC2034,SC2154,SC2155,SC2164,SC2086'
+          # SC2034: unused variables (ebuilds define many for portage)
+          # SC2154: referenced but not assigned (portage provides)
+          # SC2155: declare and assign separately (ebuild style)
+          # SC2164: use cd ... || exit (|| die is the ebuild idiom)
+          # SC2086: double-quote to prevent globbing (flag lists are unquoted by design)
+
+  # Gentoo-specific checks via local hooks
+  - repo: local
+    hooks:
+      - id: pkgcheck
+        name: pkgcheck scan
+        description: Run pkgcheck on changed ebuilds
+        entry: bash -c 'command -v pkgcheck >/dev/null || { echo "pkgcheck not installed (emerge dev-util/pkgcheck)"; exit 0; }; pkgcheck scan --commits'
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
+      - id: manifest-check
+        name: verify manifests are up to date
+        description: Warn if Manifest files need regenerating
+        entry: bash -c 'command -v pkgdev >/dev/null || { echo "pkgdev not installed (emerge dev-util/pkgdev)"; exit 0; }; pkgdev manifest -r . && git diff --exit-code --name-only -- "*/Manifest" || { echo "Manifest files changed — please review and commit"; exit 1; }'
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
+      - id: no-absolute-homedir
+        name: no hardcoded /home paths
+        description: Ebuilds should not reference absolute /home/user paths
+        entry: bash -c 'files=$(grep -l "/home/user" "$@" 2>/dev/null); if [ -n "$files" ]; then echo "Hardcoded /home/user paths in: $files"; exit 1; fi'
+        language: system
+        files: '\.(ebuild|eclass)$'

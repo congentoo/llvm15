@@ -1,0 +1,23 @@
+Title: Python 3.14 support for all packages
+Author: Ivan Anishchuk <ivan@ivananishchuk.net>
+Posted: 2026-04-08
+Revision: 1
+News-Item-Format: 2.0
+Display-If-Installed: llvm-core/llvm
+
+All 17 Python-using ebuilds in the llvm15 overlay now support
+Python 3.10 through 3.14.
+
+Previously, most packages were limited to Python 3.10-3.11,
+which could cause dependency conflicts on systems that have
+dropped older Python versions.
+
+This applies to:
+- LLVM core: llvm, clang, lld, lldb, libclc
+- Runtimes: compiler-rt, libcxx, libcxxabi, libunwind, openmp
+- Intel: intel-graphics-compiler
+- Bindings: dev-python/lit, dev-python/clang, dev-ml/llvm
+
+No functional changes — Python is used only for build scripts,
+test harnesses (lit), or pure-Python bindings (clang ctypes
+wrapper, lldb SWIG bindings).

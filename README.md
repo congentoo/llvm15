@@ -17,7 +17,7 @@ stack so that older Intel GPUs can continue to use OpenCL on Gentoo.
 
 ### LLVM 15 core toolchain (llvm-core/)
 
-All at version 15.0.7, using Gentoo patchsets for GCC 15 / Python 3.13 compat:
+All at version 15.0.7, using Gentoo patchsets for GCC 15 / Python 3.14 compat:
 
 - llvm-core/llvm (r7 patchset)
 - llvm-core/clang (r3 patchset)
@@ -39,9 +39,9 @@ All at version 15.0.7, using Gentoo patchsets for GCC 15 / Python 3.13 compat:
   Requires LLVM 15. Three Gentoo patches: no -Werror, opencl-clang version
   detection workaround, git command removal.
 
-- **dev-libs/intel-compute-runtime** 24.35.30872.{32,36} (SLOT=legacy)
-  Legacy branch for Gen8/9/11 GPUs. GCC 15 patch from Arch Linux.
-  Uses NEO_ALLOW_LEGACY_PLATFORMS_SUPPORT.
+- **dev-libs/intel-compute-runtime** 24.35.30872.{32,36,45} (SLOT=legacy)
+  Legacy branch for Gen8/9/11 GPUs. Version .45 includes upstream
+  GCC 15 fixes (no patch needed). Uses NEO_ALLOW_LEGACY_PLATFORMS_SUPPORT.
 
 - **dev-util/spirv-llvm-translator** 15.0.{17,19,22} (SLOT=15)
   Bi-directional SPIR-V / LLVM IR translator. **Actively maintained upstream**

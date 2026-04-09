@@ -1,0 +1,22 @@
+Title: intel-compute-runtime 24.35.30872.45
+Author: Ivan Anishchuk <ivan@ivananishchuk.net>
+Posted: 2026-04-08
+Revision: 1
+News-Item-Format: 2.0
+Display-If-Installed: dev-libs/intel-compute-runtime
+
+intel-compute-runtime has been bumped to 24.35.30872.45 on the
+legacy maintenance branch.
+
+This version includes upstream GCC 15 compatibility fixes that
+were previously carried as a separate patch. The patch is no
+longer needed and the new ebuild does not apply it.
+
+Other changes: type size reduction, snprintf safety, DRM test
+fixes, and compiler warning suppression.
+
+To upgrade:
+
+  emerge --ask dev-libs/intel-compute-runtime::llvm15
+
+The older versions (24.35.30872.32, .36) remain available.

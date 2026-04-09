@@ -1,0 +1,28 @@
+Title: spirv-llvm-translator 15.0.22, opencl-clang 15.0.8
+Author: Ivan Anishchuk <ivan@ivananishchuk.net>
+Posted: 2026-04-08
+Revision: 1
+News-Item-Format: 2.0
+Display-If-Installed: dev-util/spirv-llvm-translator
+
+spirv-llvm-translator and opencl-clang have been bumped to their
+latest LLVM 15 branch releases.
+
+spirv-llvm-translator 15.0.22 (was 15.0.19):
+- New SPIR-V extensions: SPV_KHR_fma, SPV_INTEL_device_barrier
+- BFloat16 support improvements
+- Multiple type correctness fixes
+
+opencl-clang 15.0.8 (was 15.0.5):
+- Support for -spirv-ext= flag
+- GCC 15 compatibility fixes (upstream)
+- Out-of-tree build fixes
+
+Both packages are actively maintained upstream on their LLVM 15
+branches. The older versions (15.0.19, 15.0.5) remain available
+in the overlay.
+
+To upgrade:
+
+  emerge --ask dev-util/spirv-llvm-translator::llvm15 \
+    dev-libs/opencl-clang::llvm15

@@ -1,0 +1,30 @@
+Title: LLVM 15 overlay for legacy Intel GPU OpenCL
+Author: Ivan Anishchuk <ivan@ivananishchuk.net>
+Posted: 2026-04-08
+Revision: 1
+News-Item-Format: 2.0
+Display-If-Installed: dev-util/intel-graphics-compiler
+
+The llvm15 overlay preserves the LLVM 15 toolchain and the legacy
+Intel GPU OpenCL stack that were removed from the Gentoo tree.
+
+This overlay is needed if you have an Intel Gen8, Gen9, or Gen11
+GPU (Broadwell through Ice Lake) and use OpenCL. The Intel
+Graphics Compiler for these GPUs requires LLVM 15, which is no
+longer in the main Gentoo repository.
+
+Included packages:
+- Full LLVM 15.0.7 toolchain (llvm, clang, lld, compiler-rt, etc.)
+- intel-graphics-compiler:legacy (1.0.17791.18)
+- intel-compute-runtime:legacy (24.35.30872.x)
+- spirv-llvm-translator:15, opencl-clang:15
+
+The LLVM 15 ebuilds use Gentoo patchsets for compatibility with
+GCC 15 and Python 3.13. The Intel packages carry distribution
+patches for build fixes.
+
+LLVM 15 core is end-of-life upstream since January 2023. However,
+spirv-llvm-translator and opencl-clang continue to receive active
+maintenance on their LLVM 15 branches from Khronos and Intel.
+
+For details, see the overlay README.md.

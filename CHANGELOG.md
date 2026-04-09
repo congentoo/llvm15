@@ -2,9 +2,9 @@
 
 ## 2026-04-08: Widen PYTHON_COMPAT to 3.14 across all ebuilds
 
-All 17 ebuilds with PYTHON_COMPAT now support python3_{10..14}.
+All 17 ebuilds with PYTHON_COMPAT now support python3\_{10..14}.
 
-Previously: 12 ebuilds at 3_{10..11}, 5 at 3_{10..13}.
+Previously: 12 ebuilds at 3\_{10..11}, 5 at 3\_{10..13}.
 
 ### Analysis
 
@@ -12,11 +12,11 @@ Previously: 12 ebuilds at 3_{10..11}, 5 at 3_{10..13}.
   libcxx, libcxxabi, libunwind, compiler-rt (×3), compiler-rt-sanitizers,
   llvm-ocaml. Python used only for cmake/lit build scripts — safe to widen.
 - **Runtime** (python-single-r1/python-r1, 2 ebuilds):
-  - lldb: SWIG bindings, dep dev-python/six supports 3_{11..14}
+  - lldb: SWIG bindings, dep dev-python/six supports 3\_{11..14}
   - dev-python/clang: pure ctypes wrapper around libclang.so, no
     version-sensitive code
 - **Already at 3.13** (5 ebuilds): llvm, clang, IGC, lit, compiler-rt
-  base — widened from 3_{10..13} to 3_{10..14}
+  base — widened from 3\_{10..13} to 3\_{10..14}
 
 All Python dependencies in the Gentoo tree (six, psutil, recommonmark,
 sphinx) support 3.14.
@@ -24,6 +24,7 @@ sphinx) support 3.14.
 ## 2026-04-08: Bump intel-compute-runtime to 24.35.30872.45
 
 9 commits since .36 (legacy maintenance branch):
+
 - GCC 15 `<cstdint>` fixes merged upstream (3 commits)
 - Type size reduction for TagAllocator
 - snprintf safety for string null termination
@@ -40,6 +41,7 @@ Source: https://github.com/intel/compute-runtime/compare/24.35.30872.36...24.35.
 ### spirv-llvm-translator 15.0.19 -> 15.0.22
 
 16 backported commits from Khronos upstream (Jan-Mar 2026):
+
 - New SPIR-V extensions: SPV_KHR_fma, SPV_INTEL_device_barrier,
   SPV_INTEL_subgroup_matrix_multiply_accumulate (FP4/FP8)
 - BFloat16 demangling and type fixes
@@ -48,13 +50,14 @@ Source: https://github.com/intel/compute-runtime/compare/24.35.30872.36...24.35.
 - CI improvements
 
 Ebuild: No changes needed. The `%triple` sed fix (PR #2555) is still
-required — verified `%triple` still present in test/DebugInfo/X86/*.ll.
+required — verified `%triple` still present in test/DebugInfo/X86/\*.ll.
 
 Source: https://github.com/KhronosGroup/SPIRV-LLVM-Translator/compare/v15.0.19...v15.0.22
 
 ### opencl-clang 15.0.5 -> 15.0.8
 
 7 commits from Intel upstream (Jan-Mar 2026):
+
 - Support `-spirv-ext=` flag for specifying allowed SPIR-V extensions
 - Clang patches: cl_khr_gl_msaa_sharing minimum version,
   pointer-to-vector conversion diagnostics

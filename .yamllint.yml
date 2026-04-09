@@ -1,0 +1,20 @@
+# yamllint configuration
+# https://yamllint.readthedocs.io/
+#
+# Used by the pre-commit yamllint hook. Starts from the "relaxed" preset
+# and loosens rules that fight GitHub Actions / pre-commit config style.
+
+extends: relaxed
+
+rules:
+  # GitHub workflows and dependabot configs have long lines; don't fight it.
+  line-length: disable
+
+  # A leading "---" is optional for our use.
+  document-start: disable
+
+  # GH Actions uses "on:" as a key, which yamllint otherwise flags as truthy.
+  truthy:
+    check-keys: false
+
+  # Keep a floor on trailing whitespace / EOF / indentation from the preset.

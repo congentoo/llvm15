@@ -69,13 +69,13 @@ intel-compute-runtime:legacy (24.35.x, Gen8/9/11 GPUs)
 
 ## Upstream status (as of April 2026)
 
-| Component | Status |
-|-----------|--------|
-| LLVM 15 core | EOL since January 2023. Gentoo patchsets only. |
+| Component                | Status                                                    |
+| ------------------------ | --------------------------------------------------------- |
+| LLVM 15 core             | EOL since January 2023. Gentoo patchsets only.            |
 | spirv-llvm-translator:15 | **Active** — Khronos releases regularly (latest v15.0.22) |
-| opencl-clang:15 | **Active** — Intel releases regularly (latest v15.0.8) |
-| IGC (LLVM 15 line) | EOL — v2.18.5 was the last LLVM 15 release |
-| compute-runtime (legacy) | Maintenance only on 24.35 branch |
+| opencl-clang:15          | **Active** — Intel releases regularly (latest v15.0.8)    |
+| IGC (LLVM 15 line)       | EOL — v2.18.5 was the last LLVM 15 release                |
+| compute-runtime (legacy) | Maintenance only on 24.35 branch                          |
 
 ## Potential future directions
 

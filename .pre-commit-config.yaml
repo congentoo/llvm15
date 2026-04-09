@@ -34,13 +34,39 @@ repos:
           # SC2164: use cd ... || exit (|| die is the ebuild idiom)
           # SC2086: double-quote to prevent globbing (flag lists are unquoted by design)
 
+  # YAML linting (GH workflows, dependabot, pre-commit config itself)
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.38.0
+    hooks:
+      - id: yamllint
+        args: ['--strict', '-c', '.yamllint.yml']
+
+  # Markdown formatting (READMEs, CHANGELOGs, SECURITY, research notes)
+  # mdformat is Python-based and covers GitHub Flavored Markdown via plugins.
+  # wrap=no preserves authored line breaks to avoid churn on existing docs.
+  - repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.22
+    hooks:
+      - id: mdformat
+        args: ['--wrap=keep', '--number']
+        # --wrap=keep  preserves authored line breaks
+        # --number     uses consecutive numbering (1. 2. 3.) not "1." for all items
+        additional_dependencies:
+          - mdformat-gfm          # GitHub Flavored Markdown (tables, task lists, strikethrough)
+          - mdformat-tables       # extra table handling
+          - mdformat-frontmatter  # YAML/TOML frontmatter pass-through
+          - mdformat-footnote     # footnote support
+
   # Gentoo-specific checks via local hooks
   - repo: local
     hooks:
       - id: pkgcheck
         name: pkgcheck scan
-        description: Run pkgcheck on changed ebuilds
-        entry: bash -c 'command -v pkgcheck >/dev/null || { echo "pkgcheck not installed (emerge dev-util/pkgcheck)"; exit 0; }; pkgcheck scan --commits'
+        description: Run pkgcheck on staged changes
+        # Uses --staged instead of --commits so it works in overlays without
+        # an 'origin' remote configured (the --commits path resolves against
+        # origin/HEAD and fails otherwise).
+        entry: "bash -c 'command -v pkgcheck >/dev/null || { echo \"pkgcheck not installed (emerge dev-util/pkgcheck)\"; exit 0; }; pkgcheck scan --staged'"
         language: system
         pass_filenames: false
         stages: [pre-commit]
@@ -48,14 +74,27 @@ repos:
       - id: manifest-check
         name: verify manifests are up to date
         description: Warn if Manifest files need regenerating
-        entry: bash -c 'command -v pkgdev >/dev/null || { echo "pkgdev not installed (emerge dev-util/pkgdev)"; exit 0; }; pkgdev manifest -r . && git diff --exit-code --name-only -- "*/Manifest" || { echo "Manifest files changed — please review and commit"; exit 1; }'
+        # pkgdev manifest no longer accepts -r; --if-modified is the modern
+        # way to only touch packages with uncommitted changes.
+        entry: "bash -c 'command -v pkgdev >/dev/null || { echo \"pkgdev not installed (emerge dev-util/pkgdev)\"; exit 0; }; pkgdev manifest --if-modified && git diff --exit-code --name-only -- \"*/Manifest\" || { echo \"Manifest files changed - please review and commit\"; exit 1; }'"
         language: system
         pass_filenames: false
         stages: [pre-commit]
 
+      - id: md5-cache
+        name: regenerate metadata/md5-cache
+        description: Refresh tracked metadata/md5-cache tree via egencache
+        # Runs only when .ebuild or .eclass files change. Exits non-zero if
+        # md5-cache is now out of sync with git so the user stages the delta.
+        entry: "bash -c 'command -v egencache >/dev/null || { echo \"egencache not installed (emerge sys-apps/portage)\"; exit 0; }; ./.ci/regen-md5-cache.sh . >/dev/null 2>&1 && git diff --exit-code --name-only -- metadata/md5-cache/ || { echo \"metadata/md5-cache/ changed - please stage and commit\"; exit 1; }'"
+        language: system
+        pass_filenames: false
+        files: '\.(ebuild|eclass)$'
+        stages: [pre-commit]
+
       - id: no-absolute-homedir
         name: no hardcoded /home paths
-        description: Ebuilds should not reference absolute /home/user paths
-        entry: bash -c 'files=$(grep -l "/home/user" "$@" 2>/dev/null); if [ -n "$files" ]; then echo "Hardcoded /home/user paths in: $files"; exit 1; fi'
+        description: Ebuilds should not reference any absolute /home/ paths
+        entry: "bash -c 'files=$(grep -lE \"(^|[^a-zA-Z0-9_.-])/home/\" \"$@\" 2>/dev/null); if [ -n \"$files\" ]; then echo \"Hardcoded /home/ paths in - $files\"; exit 1; fi'"
         language: system
         files: '\.(ebuild|eclass)$'

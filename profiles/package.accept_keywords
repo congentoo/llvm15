@@ -1,0 +1,12 @@
+# Accept ~amd64 for overlay packages that were ~amd64 in the Gentoo tree
+# at the time of removal.
+
+# LLVM 15 runtimes
+=llvm-runtimes/compiler-rt-15.0.7-r2 ~amd64
+
+# LLVM 15 OCaml bindings
+=dev-ml/llvm-15.0.7 ~amd64
+
+# Intel legacy compute-runtime (24.35.x legacy branch)
+=dev-libs/intel-compute-runtime-24.35.30872.36 ~amd64
+=dev-libs/intel-compute-runtime-24.35.30872.45 ~amd64

@@ -1,0 +1,7 @@
+# Unmask llvm_slot_15 for packages in this overlay.
+# The main Gentoo tree masks llvm_slot_15 since LLVM 15 was removed.
+# This overlay provides LLVM 15 so the slot must be unmasked.
+dev-util/intel-graphics-compiler -llvm_slot_15
+dev-libs/opencl-clang:15 -llvm_slot_15
+dev-libs/intel-vc-intrinsics -llvm_slot_15
+dev-util/spirv-llvm-translator:15 -llvm_slot_15

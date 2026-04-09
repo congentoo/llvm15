@@ -79,9 +79,15 @@ intel-compute-runtime:legacy (24.35.x, Gen8/9/11 GPUs)
 
 ## Potential future directions
 
-1. **Bump IGC to v2.18.5** — last LLVM-15-compatible release, newer than current
+1. **~~Bump IGC to v2.18.5~~** — REJECTED. v2.18.5 is in the IGCv2 product line,
+   which is a separate package from the IGCv1 (1.0.x) line used by the legacy
+   compute-runtime. Crossing product lines has unknown ABI compatibility risks
+   and no community precedent. See `../research-tmp/igc-v2-bump-analysis.md`.
+   Current IGC 1.0.17791.18 (IGCv1) is the correct version for this stack.
 2. **Binary repackage ebuilds** — Intel provides pre-built Ubuntu .deb packages
-   for the legacy stack, which could bypass the LLVM 15 build dependency entirely
+   for the legacy stack (IGCv1 1.0.17537.24 + compute-runtime 24.35.x), which
+   could bypass the LLVM 15 build dependency entirely. Arch Linux AUR already
+   does this (`intel-graphics-compiler-legacy-bin`).
 3. **Migrate to LLVM 16+ IGC** — requires Gen12+ hardware (not applicable for
    legacy GPU users)
 

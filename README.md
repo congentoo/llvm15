@@ -91,10 +91,25 @@ intel-compute-runtime:legacy (24.35.x, Gen8/9/11 GPUs)
 3. **Migrate to LLVM 16+ IGC** — requires Gen12+ hardware (not applicable for
    legacy GPU users)
 
+## Enabling the overlay
+
+```ini
+# /etc/portage/repos.conf/llvm15.conf
+[llvm15]
+location = /var/db/repos/llvm15
+sync-type = git
+sync-uri = https://github.com/congentoo/llvm15.git
+auto-sync = yes
+```
+
+Then: `emerge --sync llvm15`.
+
 ## Related overlays
 
-- **llvm14/** — sibling overlay preserving LLVM 14 packages
-- **localrepo/** — main personal overlay
+- [**llvm14**](https://github.com/congentoo/llvm14) — sibling overlay
+  preserving LLVM 14 packages
+- [**localrepo**](https://github.com/congentoo/localrepo) — main personal
+  overlay (catch-all)
 
 ## References
 

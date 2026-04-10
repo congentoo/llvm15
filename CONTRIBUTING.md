@@ -11,7 +11,7 @@
 2. Clone the repository and install pre-commit hooks:
 
    ```bash
-   git clone <repo-url>
+   git clone https://github.com/congentoo/llvm15.git
    cd llvm15
    pre-commit install
    ```
@@ -43,9 +43,11 @@
 This overlay has a **narrow scope**: preserve LLVM 15 and the legacy Intel
 GPU OpenCL stack. Do NOT add:
 
-- LLVM versions other than 15 (use llvm14 overlay for 14, main tree for 16+)
+- LLVM versions other than 15 (use the [llvm14](https://github.com/congentoo/llvm14)
+  overlay for 14, main tree for 16+)
 - Non-legacy Intel GPU packages (use main tree)
-- Unrelated packages (use localrepo or create a new overlay)
+- Unrelated packages (use [localrepo](https://github.com/congentoo/localrepo)
+  or create a new overlay)
 
 ## Ebuild guidelines
 

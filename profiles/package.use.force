@@ -1,17 +1,25 @@
-# Force-enable llvm_slot_15 for all packages in this overlay.
+# Force-enable llvm_slot_15 for packages in this overlay.
 # These packages only support LLVM 15; the slot flag must be active.
-dev-ml/llvm:0 llvm_slot_15
-dev-util/intel-graphics-compiler llvm_slot_15
-dev-libs/opencl-clang:15 llvm_slot_15
-dev-libs/intel-vc-intrinsics llvm_slot_15
-dev-util/spirv-llvm-translator:15 llvm_slot_15
+# Use versioned atoms for :0 slotted packages to avoid forcing the flag
+# on newer versions from the main tree.
+
+# Slotted to 15 — safe to match by slot
 llvm-core/clang:15 llvm_slot_15
-llvm-core/libclc:0 llvm_slot_15
 llvm-core/lld:15 llvm_slot_15
-llvm-core/lldb:0 llvm_slot_15
+dev-libs/opencl-clang:15 llvm_slot_15
+dev-util/spirv-llvm-translator:15 llvm_slot_15
 llvm-runtimes/compiler-rt:15.0.7 llvm_slot_15
 llvm-runtimes/compiler-rt-sanitizers:15.0.7 llvm_slot_15
-llvm-runtimes/libcxx:0 llvm_slot_15
-llvm-runtimes/libcxxabi:0 llvm_slot_15
-llvm-runtimes/libunwind:0 llvm_slot_15
-llvm-runtimes/openmp:0 llvm_slot_15
+
+# Slot :0 — pin to exact versions from this overlay
+=dev-ml/llvm-15.0.7 llvm_slot_15
+=llvm-core/libclc-15.0.7 llvm_slot_15
+=llvm-core/lldb-15.0.7 llvm_slot_15
+=llvm-runtimes/libcxx-15.0.7-r1 llvm_slot_15
+=llvm-runtimes/libcxxabi-15.0.7 llvm_slot_15
+=llvm-runtimes/libunwind-15.0.7 llvm_slot_15
+=llvm-runtimes/openmp-15.0.7-r6 llvm_slot_15
+
+# Multiple versions in overlay — match both
+=dev-util/intel-graphics-compiler-1.0.17537.24 llvm_slot_15
+=dev-util/intel-graphics-compiler-1.0.17791.18-r1 llvm_slot_15

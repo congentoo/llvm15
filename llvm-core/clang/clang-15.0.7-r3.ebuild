@@ -370,6 +370,9 @@ multilib_src_compile() {
 multilib_src_test() {
 	# respect TMPDIR!
 	local -x LIT_PRESERVES_TMP=1
+	# ClangReplInterpreterExceptionTests crashes with GCC 15's libstdc++
+	# due to incompatible exception personality routines in JIT'd code
+	local -x LIT_FILTER_OUT="ClangReplInterpreterExceptionTests"
 	local test_targets=( check-clang )
 	if multilib_native_use extra; then
 		test_targets+=(

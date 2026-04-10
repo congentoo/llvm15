@@ -10,7 +10,7 @@ repos:
       - id: trailing-whitespace
         exclude: '\.patch$'
       - id: end-of-file-fixer
-        exclude: '\.patch$|^.*/Manifest$'
+        exclude: '\.patch$|(/|^)Manifest$'
       - id: check-yaml
       - id: check-merge-conflict
       - id: check-added-large-files
@@ -90,6 +90,17 @@ repos:
         language: system
         pass_filenames: false
         files: '\.(ebuild|eclass)$'
+        stages: [pre-commit]
+
+      - id: gemato-sign
+        name: re-sign manifest tree
+        description: Update and re-sign the gemato Manifest tree after changes
+        # Regenerates the intermediate Manifest files and the signed
+        # top-level Manifest. Fails if tree files changed so the
+        # user can stage them alongside the commit.
+        entry: "bash -c 'command -v gemato >/dev/null || { echo \"gemato not installed (emerge app-portage/gemato); to skip: SKIP=gemato-sign git commit\"; exit 1; }; gemato update --sign --openpgp-id ivan@agorism.org --profile ebuild --hashes \"BLAKE2B SHA512\" --timestamp --compress-watermark 999999999 -q . && git diff --exit-code --name-only -- Manifest \":(glob)**/Manifest\" || { echo \"Manifest tree updated - please stage Manifest files and re-commit\"; exit 1; }'"
+        language: system
+        pass_filenames: false
         stages: [pre-commit]
 
       - id: no-absolute-homedir

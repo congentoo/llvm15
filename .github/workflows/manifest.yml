@@ -20,6 +20,8 @@ jobs:
       - name: Install pkgdev
         run: |
           emerge-webrsync --quiet
+          # Import Gentoo release keys so binpkg GPG verification succeeds
+          getuto
           emerge --getbinpkg --usepkg --quiet-build dev-util/pkgdev
 
       - name: Checkout

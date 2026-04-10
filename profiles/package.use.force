@@ -1,0 +1,17 @@
+# Force-enable llvm_slot_15 for all packages in this overlay.
+# These packages only support LLVM 15; the slot flag must be active.
+dev-ml/llvm:0 llvm_slot_15
+dev-util/intel-graphics-compiler llvm_slot_15
+dev-libs/opencl-clang:15 llvm_slot_15
+dev-libs/intel-vc-intrinsics llvm_slot_15
+dev-util/spirv-llvm-translator:15 llvm_slot_15
+llvm-core/clang:15 llvm_slot_15
+llvm-core/libclc:0 llvm_slot_15
+llvm-core/lld:15 llvm_slot_15
+llvm-core/lldb:0 llvm_slot_15
+llvm-runtimes/compiler-rt:15.0.7 llvm_slot_15
+llvm-runtimes/compiler-rt-sanitizers:15.0.7 llvm_slot_15
+llvm-runtimes/libcxx:0 llvm_slot_15
+llvm-runtimes/libcxxabi:0 llvm_slot_15
+llvm-runtimes/libunwind:0 llvm_slot_15
+llvm-runtimes/openmp:0 llvm_slot_15

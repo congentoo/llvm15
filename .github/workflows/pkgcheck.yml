@@ -27,9 +27,9 @@ jobs:
         # pkgcheck-action has no tagged releases; pin to the latest main SHA
         uses: pkgcore/pkgcheck-action@8491e92faa1010d5c6947c114d23215e5a74684e  # 2026-03-24
         with:
-          # --net              enable HomepageUnreachable etc.
-          # --arches=amd64     only arch targeted by this overlay
-          # -RedundantVersion  older versions kept for rollback
+          # --net             enable HomepageUnreachable etc.
+          # --arches=amd64    only arch targeted by this overlay
+          # -RedundantVersion older versions kept intentionally for rollback
           # -DeprecatedEclass  TODO: migrate llvm15 ebuilds from llvm.eclass
           #                    to llvm-r2.eclass (slot 15 IS supported)
           args: >-

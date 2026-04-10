@@ -32,13 +32,32 @@ jobs:
 
       - name: Configure repo
         run: |
-          mkdir -p /etc/portage/repos.conf
-          cat > /etc/portage/repos.conf/ci.conf <<EOF
+          # Convert repos.conf to a directory if it's a file
+          if [ -f /etc/portage/repos.conf ]; then
+            mv /etc/portage/repos.conf /etc/portage/repos.conf.bak
+            mkdir -p /etc/portage/repos.conf
+            mv /etc/portage/repos.conf.bak /etc/portage/repos.conf/gentoo.conf
+          else
+            mkdir -p /etc/portage/repos.conf
+          fi
+          # Ensure gentoo repo is explicitly defined (creating the directory
+          # overrides portage's built-in defaults)
+          if ! grep -rq '\[gentoo\]' /etc/portage/repos.conf/ 2>/dev/null; then
+            cat > /etc/portage/repos.conf/gentoo.conf <<REPOEOF
+          [DEFAULT]
+          main-repo = gentoo
+
+          [gentoo]
+          location = /var/db/repos/gentoo
+          auto-sync = no
+          REPOEOF
+          fi
+          cat > /etc/portage/repos.conf/ci.conf <<REPOEOF
           [ci]
           location = ${GITHUB_WORKSPACE}
           masters = gentoo
           auto-sync = no
-          EOF
+          REPOEOF
 
       - name: Verify manifests up-to-date
         working-directory: ${{ github.workspace }}

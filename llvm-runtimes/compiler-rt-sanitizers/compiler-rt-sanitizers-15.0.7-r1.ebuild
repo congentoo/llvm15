@@ -61,6 +61,10 @@ LLVM_TEST_COMPONENTS=( llvm/lib/Testing/Support llvm/utils/unittest )
 LLVM_PATCHSET=${PV/_/-}-r6
 llvm.org_set_globals
 
+PATCHES=(
+	"${FILESDIR}"/compiler-rt-15.0.7-remove-src-root-from-llvm-config.patch
+)
+
 python_check_deps() {
 	use test || return 0
 	python_has_version ">=dev-python/lit-15[${PYTHON_USEDEP}]"

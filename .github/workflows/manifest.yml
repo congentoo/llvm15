@@ -43,15 +43,15 @@ jobs:
       - name: Verify manifests up-to-date
         working-directory: ${{ github.workspace }}
         run: |
-          # Copy to tmp, regenerate manifests, diff
-          tmp=$(mktemp -d)
-          cp -a . "$tmp/repo"
-          pkgdev manifest -r "$tmp/repo"
-          if ! diff -rq \
-              --exclude=.git --exclude=.github --exclude=.pre-commit-config.yaml \
-              . "$tmp/repo"; then
+          # Mark workspace as a safe git directory (container runs as root
+          # but the checkout may have a different owner)
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          # Regenerate manifests in place; the workspace is registered as
+          # the [ci] repo in repos.conf, so pkgdev can resolve masters.
+          pkgdev manifest --if-modified || pkgdev manifest
+          if ! git diff --exit-code --name-only; then
             echo "::error::Manifest files are out of date."
-            echo "Run 'pkgdev manifest -r .' locally and commit the changes."
+            echo "Run 'pkgdev manifest' locally and commit the changes."
             exit 1
           fi
           echo "✓ All manifests are up to date"

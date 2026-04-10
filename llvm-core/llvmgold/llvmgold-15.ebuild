@@ -9,7 +9,7 @@ S=${WORKDIR}
 
 LICENSE="public-domain"
 SLOT="0"
-KEYWORDS="amd64 arm arm64 riscv x86 amd64-linux"
+KEYWORDS="amd64"
 
 RDEPEND="
 	llvm-core/llvm:${PV}[binutils-plugin]

@@ -6,12 +6,12 @@ EAPI=8
 HOMEPAGE=https://llvm.org/
 INHERIT=llvm.org python-r1
 IUSE=test verify-sig python_targets_python3_11 python_targets_python3_12 python_targets_python3_13 python_targets_python3_14
-KEYWORDS=amd64 ~arm arm64 ~x86
+KEYWORDS=amd64
 LICENSE=Apache-2.0-with-LLVM-exceptions UoI-NCSA
 RDEPEND=>=llvm-core/clang-15.0.7:* !llvm-core/llvm:0[clang(-),python(-)] !llvm-core/clang:0[python(-)] python_targets_python3_11? ( dev-lang/python:3.11 ) python_targets_python3_12? ( dev-lang/python:3.12 ) python_targets_python3_13? ( dev-lang/python:3.13 ) python_targets_python3_14? ( dev-lang/python:3.14 )
 REQUIRED_USE=|| ( python_targets_python3_11 python_targets_python3_12 python_targets_python3_13 python_targets_python3_14 )
 RESTRICT=!test? ( test )
 SLOT=0
 SRC_URI=https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.7/llvm-project-15.0.7.src.tar.xz verify-sig? ( https://github.com/llvm/llvm-project/releases/download/llvmorg-15.0.7/llvm-project-15.0.7.src.tar.xz.sig )
-_eclasses_=llvm.org	2d16ab868b20e296ddf1b453b2cc8b43	multiprocessing	45d0620f25c2f063ad6276ecd9ed9399	verify-sig	ece4c893b6bd62eacbc4d25958e857f8	eapi9-pipestatus	d2c134036ac31c3085aebc9147f572bd	python-r1	5fdca77e34fc9af7d6eb47689f33f6bf	multibuild	83db098a835f71feb71761f72a694aa2	out-of-source-utils	8e5093bd27b7f541a1913271f25d633a	python-utils-r1	9c4180f103a0e8340bc993fc85dbdadd	toolchain-funcs	5195689ff6a73b0e789acfa09d4fbcb9
-_md5_=f6490e939eb805512bcaf1e970071fa7
+_eclasses_=eapi9-pipestatus	d2c134036ac31c3085aebc9147f572bd	llvm.org	2d16ab868b20e296ddf1b453b2cc8b43	multibuild	83db098a835f71feb71761f72a694aa2	multiprocessing	45d0620f25c2f063ad6276ecd9ed9399	out-of-source-utils	8e5093bd27b7f541a1913271f25d633a	python-r1	5fdca77e34fc9af7d6eb47689f33f6bf	python-utils-r1	9c4180f103a0e8340bc993fc85dbdadd	toolchain-funcs	5195689ff6a73b0e789acfa09d4fbcb9	verify-sig	ece4c893b6bd62eacbc4d25958e857f8
+_md5_=d4820f735d210b441a7a5150b7af70e0

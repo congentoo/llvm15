@@ -1,0 +1,16 @@
+# Per-clone Claude Code workspace state (agent memory, caches, settings)
+.claude/
+
+# Editor swap / backup files
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Local pkgcheck / pkgdev scratch
+.pkgcheck-cache/
+
+# Ad-hoc shell / scratch work that shouldn't ship with the overlay
+/scratch/
+/tmp/

@@ -5,7 +5,7 @@ EAPI=8
 
 LLVM_COMPAT=( 15 )
 
-inherit cmake llvm-r1
+inherit cmake llvm-r2
 
 DESCRIPTION="OpenCL-oriented thin wrapper library around clang"
 HOMEPAGE="https://github.com/intel/opencl-clang"

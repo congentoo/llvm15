@@ -9,7 +9,7 @@ MY_PN="igc"
 MY_P="${MY_PN}-${PV}"
 PYTHON_COMPAT=( python3_{10..14} )
 
-inherit cmake flag-o-matic llvm-r1 python-any-r1
+inherit cmake flag-o-matic llvm-r2 python-any-r1
 
 DESCRIPTION="LLVM-based OpenCL compiler for OpenCL targetting Intel Gen graphics hardware"
 HOMEPAGE="https://github.com/intel/intel-graphics-compiler"
@@ -58,7 +58,7 @@ PATCHES=(
 )
 
 pkg_setup() {
-	llvm-r1_pkg_setup
+	llvm-r2_pkg_setup
 	python-any-r1_pkg_setup
 }
 

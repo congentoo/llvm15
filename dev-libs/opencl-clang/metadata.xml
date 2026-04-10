@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>ivan@ivananishchuk.net</email>
+		<name>Ivan Anishchuk</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">intel/opencl-clang</remote-id>
+	</upstream>
+</pkgmetadata>

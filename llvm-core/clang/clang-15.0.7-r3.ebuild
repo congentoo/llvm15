@@ -4,7 +4,8 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{10..14} )
-inherit cmake llvm llvm.org multilib multilib-minimal \
+LLVM_COMPAT=( 15 )
+inherit cmake llvm-r2 llvm.org multilib multilib-minimal \
 	prefix python-single-r1 toolchain-funcs
 
 DESCRIPTION="C language family frontend for LLVM"
@@ -17,7 +18,7 @@ LICENSE="Apache-2.0-with-LLVM-exceptions UoI-NCSA MIT"
 SLOT="${LLVM_MAJOR}/${LLVM_SOABI}g1"
 KEYWORDS="amd64"
 IUSE="debug doc +extra ieee-long-double +pie +static-analyzer test xml"
-REQUIRED_USE="${PYTHON_REQUIRED_USE}"
+REQUIRED_USE="${PYTHON_REQUIRED_USE} ${LLVM_REQUIRED_USE}"
 RESTRICT="!test? ( test )"
 
 DEPEND="
@@ -70,7 +71,7 @@ llvm.org_set_globals
 # multilib clang* libraries (not runtime, not wrappers).
 
 pkg_setup() {
-	LLVM_MAX_SLOT=${LLVM_MAJOR} llvm_pkg_setup
+	llvm-r2_pkg_setup
 	python-single-r1_pkg_setup
 }
 

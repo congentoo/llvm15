@@ -4,7 +4,8 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{10..14} )
-inherit cmake flag-o-matic llvm llvm.org python-any-r1 toolchain-funcs
+LLVM_COMPAT=( 15 )
+inherit cmake flag-o-matic llvm-r2 llvm.org python-any-r1 toolchain-funcs
 
 DESCRIPTION="Compiler runtime library for clang (built-in part)"
 HOMEPAGE="https://llvm.org/"
@@ -13,7 +14,7 @@ LICENSE="Apache-2.0-with-LLVM-exceptions || ( UoI-NCSA MIT )"
 SLOT="${LLVM_VERSION}"
 KEYWORDS="amd64"
 IUSE="+abi_x86_32 abi_x86_64 +atomic-builtins +clang debug test"
-REQUIRED_USE="atomic-builtins? ( clang )"
+REQUIRED_USE="${LLVM_REQUIRED_USE} atomic-builtins? ( clang )"
 RESTRICT="!test? ( test ) !clang? ( test )"
 
 DEPEND="
@@ -49,9 +50,9 @@ pkg_pretend() {
 pkg_setup() {
 	# Darwin Prefix builds do not have llvm installed yet, so rely on
 	# bootstrap-prefix to set the appropriate path vars to LLVM instead
-	# of using llvm_pkg_setup.
+	# of using llvm-r2_pkg_setup.
 	if [[ ${CHOST} != *-darwin* ]] || has_version llvm-core/llvm; then
-		LLVM_MAX_SLOT=${LLVM_MAJOR} llvm_pkg_setup
+		llvm-r2_pkg_setup
 	fi
 	python-any-r1_pkg_setup
 }

@@ -4,7 +4,8 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{10..14} )
-inherit cmake-multilib flag-o-matic llvm llvm.org python-any-r1 \
+LLVM_COMPAT=( 15 )
+inherit cmake-multilib flag-o-matic llvm-r2 llvm.org python-any-r1 \
 	toolchain-funcs
 
 DESCRIPTION="Low level support for a standard C++ library"
@@ -14,7 +15,7 @@ LICENSE="Apache-2.0-with-LLVM-exceptions || ( UoI-NCSA MIT )"
 SLOT="0"
 KEYWORDS="amd64"
 IUSE="+clang +static-libs test"
-REQUIRED_USE="test? ( clang )"
+REQUIRED_USE="${LLVM_REQUIRED_USE} test? ( clang )"
 RESTRICT="!test? ( test )"
 
 # in 15.x, cxxabi.h is moving from libcxx to libcxxabi
@@ -48,9 +49,9 @@ python_check_deps() {
 
 pkg_setup() {
 	# darwin prefix builds do not have llvm installed yet, so rely on bootstrap-prefix
-	# to set the appropriate path vars to LLVM instead of using llvm_pkg_setup.
+	# to set the appropriate path vars to LLVM instead of using llvm-r2_pkg_setup.
 	if [[ ${CHOST} != *-darwin* ]] || has_version llvm-core/llvm; then
-		LLVM_MAX_SLOT=${LLVM_MAJOR} llvm_pkg_setup
+		llvm-r2_pkg_setup
 	fi
 	python-any-r1_pkg_setup
 }

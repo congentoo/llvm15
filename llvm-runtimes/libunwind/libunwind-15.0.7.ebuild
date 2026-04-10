@@ -4,7 +4,8 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{10..14} )
-inherit cmake-multilib flag-o-matic llvm llvm.org python-any-r1 \
+LLVM_COMPAT=( 15 )
+inherit cmake-multilib flag-o-matic llvm-r2 llvm.org python-any-r1 \
 	toolchain-funcs
 
 DESCRIPTION="C++ runtime stack unwinder from LLVM"
@@ -14,7 +15,7 @@ LICENSE="Apache-2.0-with-LLVM-exceptions || ( UoI-NCSA MIT )"
 SLOT="0"
 KEYWORDS="amd64"
 IUSE="+clang debug static-libs test"
-REQUIRED_USE="test? ( clang )"
+REQUIRED_USE="${LLVM_REQUIRED_USE} test? ( clang )"
 RESTRICT="!test? ( test )"
 
 RDEPEND="
@@ -45,7 +46,7 @@ python_check_deps() {
 }
 
 pkg_setup() {
-	LLVM_MAX_SLOT=${LLVM_MAJOR} llvm_pkg_setup
+	llvm-r2_pkg_setup
 	python-any-r1_pkg_setup
 }
 

@@ -4,7 +4,8 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{10..14} )
-inherit cmake llvm llvm.org python-any-r1
+LLVM_COMPAT=( 15 )
+inherit cmake llvm-r2 llvm.org python-any-r1
 
 DESCRIPTION="OCaml bindings for LLVM"
 HOMEPAGE="https://llvm.org/"
@@ -36,7 +37,7 @@ LLVM_USE_TARGETS=llvm
 llvm.org_set_globals
 
 pkg_setup() {
-	LLVM_MAX_SLOT=${LLVM_MAJOR} llvm_pkg_setup
+	llvm-r2_pkg_setup
 	python-any-r1_pkg_setup
 }
 

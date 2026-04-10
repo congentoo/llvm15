@@ -4,7 +4,8 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{10..14} )
-inherit cmake flag-o-matic llvm llvm.org python-any-r1 toolchain-funcs
+LLVM_COMPAT=( 15 )
+inherit cmake flag-o-matic llvm-r2 llvm.org python-any-r1 toolchain-funcs
 
 DESCRIPTION="The LLVM linker (link editor)"
 HOMEPAGE="https://llvm.org/"
@@ -42,7 +43,7 @@ python_check_deps() {
 }
 
 pkg_setup() {
-	LLVM_MAX_SLOT=${LLVM_MAJOR} llvm_pkg_setup
+	llvm-r2_pkg_setup
 	use test && python-any-r1_pkg_setup
 }
 

@@ -4,7 +4,9 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{10..14} )
-inherit cmake llvm llvm.org python-any-r1
+LLVM_COMPAT=( 15 )
+LLVM_OPTIONAL=1
+inherit cmake llvm-r2 llvm.org python-any-r1
 
 DESCRIPTION="OpenCL C library"
 HOMEPAGE="https://libclc.llvm.org/"
@@ -13,39 +15,21 @@ LICENSE="Apache-2.0-with-LLVM-exceptions || ( MIT BSD )"
 SLOT="0"
 KEYWORDS="amd64"
 IUSE="+spirv video_cards_nvidia video_cards_r600 video_cards_radeonsi"
+REQUIRED_USE="${LLVM_REQUIRED_USE}"
 
-LLVM_MAX_SLOT=15
 BDEPEND="
 	${PYTHON_DEPS}
-	|| (
-		(
-			llvm-core/clang:15
-			spirv? ( dev-util/spirv-llvm-translator:15 )
-		)
-		(
-			llvm-core/clang:14
-			spirv? ( dev-util/spirv-llvm-translator:14 )
-		)
-		(
-			llvm-core/clang:13
-			spirv? ( dev-util/spirv-llvm-translator:13 )
-		)
-	)
+	$(llvm_gen_dep '
+		llvm-core/clang:${LLVM_SLOT}
+		spirv? ( dev-util/spirv-llvm-translator:${LLVM_SLOT} )
+	')
 "
 
 LLVM_COMPONENTS=( libclc )
 llvm.org_set_globals
 
-llvm_check_deps() {
-	if use spirv; then
-		has_version -b "dev-util/spirv-llvm-translator:${LLVM_SLOT}" ||
-			return 1
-	fi
-	has_version -b "llvm-core/clang:${LLVM_SLOT}"
-}
-
 pkg_setup() {
-	# we do not need llvm_pkg_setup
+	# we do not need llvm-r2_pkg_setup
 	python-any-r1_pkg_setup
 }
 
@@ -75,7 +59,7 @@ src_configure() {
 	libclc_targets=${libclc_targets[*]}
 	local mycmakeargs=(
 		-DLIBCLC_TARGETS_TO_BUILD="${libclc_targets// /;}"
-		-DLLVM_CONFIG="$(get_llvm_prefix "${LLVM_MAX_SLOT}")/bin/llvm-config"
+		-DLLVM_CONFIG="$(get_llvm_prefix -b)/bin/llvm-config"
 	)
 	cmake_src_configure
 }

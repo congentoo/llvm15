@@ -4,7 +4,8 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{10..14} )
-inherit cmake flag-o-matic llvm llvm.org python-single-r1
+LLVM_COMPAT=( 15 )
+inherit cmake flag-o-matic llvm-r2 llvm.org python-single-r1
 
 DESCRIPTION="The LLVM debugger"
 HOMEPAGE="https://llvm.org/"
@@ -14,7 +15,7 @@ SLOT="0/${LLVM_SOABI}"
 KEYWORDS="amd64"
 IUSE="debug +libedit lzma ncurses +python test +xml"
 RESTRICT="test"
-REQUIRED_USE=${PYTHON_REQUIRED_USE}
+REQUIRED_USE="${PYTHON_REQUIRED_USE} ${LLVM_REQUIRED_USE}"
 
 DEPEND="
 	libedit? ( dev-libs/libedit:0= )
@@ -55,7 +56,7 @@ LLVM_TEST_COMPONENTS=( llvm/lib/Testing/Support llvm/utils/unittest )
 llvm.org_set_globals
 
 pkg_setup() {
-	LLVM_MAX_SLOT=${LLVM_MAJOR} llvm_pkg_setup
+	llvm-r2_pkg_setup
 	python-single-r1_pkg_setup
 }
 
